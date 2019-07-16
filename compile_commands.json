@@ -1,0 +1,121 @@
+[
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-std=c++17",
+            "-Wall",
+            "-I.",
+            "-g",
+            "-Werror",
+            "-Wfatal-errors",
+            "-o",
+            "debug/main.o",
+            "main.cpp"
+        ],
+        "directory": "/home/jameson/code/cpp/bump",
+        "file": "main.cpp"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-std=c++17",
+            "-Wall",
+            "-I.",
+            "-g",
+            "-Werror",
+            "-Wfatal-errors",
+            "-o",
+            "debug/Curie/RM.o",
+            "Curie/RM.cpp"
+        ],
+        "directory": "/home/jameson/code/cpp/bump",
+        "file": "Curie/RM.cpp"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-std=c++17",
+            "-Wall",
+            "-I.",
+            "-g",
+            "-Werror",
+            "-Wfatal-errors",
+            "-o",
+            "debug/Curie/Cog.o",
+            "Curie/Cog.cpp"
+        ],
+        "directory": "/home/jameson/code/cpp/bump",
+        "file": "Curie/Cog.cpp"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-std=c++17",
+            "-Wall",
+            "-I.",
+            "-g",
+            "-Werror",
+            "-Wfatal-errors",
+            "-o",
+            "debug/Curie/SB.o",
+            "Curie/SB.cpp"
+        ],
+        "directory": "/home/jameson/code/cpp/bump",
+        "file": "Curie/SB.cpp"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-std=c++17",
+            "-Wall",
+            "-I.",
+            "-g",
+            "-Werror",
+            "-Wfatal-errors",
+            "-o",
+            "debug/Curie/Quartz.o",
+            "Curie/Quartz.cpp"
+        ],
+        "directory": "/home/jameson/code/cpp/bump",
+        "file": "Curie/Quartz.cpp"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-std=c++17",
+            "-Wall",
+            "-I.",
+            "-g",
+            "-Werror",
+            "-Wfatal-errors",
+            "-o",
+            "debug/Play.o",
+            "Play.cpp"
+        ],
+        "directory": "/home/jameson/code/cpp/bump",
+        "file": "Play.cpp"
+    },
+    {
+        "arguments": [
+            "clang",
+            "-c",
+            "-std=c++17",
+            "-Wall",
+            "-I.",
+            "-g",
+            "-Werror",
+            "-Wfatal-errors",
+            "-o",
+            "debug/Curie/Input.o",
+            "Curie/Input.cpp"
+        ],
+        "directory": "/home/jameson/code/cpp/bump",
+        "file": "Curie/Input.cpp"
+    }
+]
