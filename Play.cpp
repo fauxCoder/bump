@@ -39,33 +39,14 @@ void Play::Run()
         Square s(m_RM);
 
         Input in(m_Q);
-        in.m_KeyDownResponses[{SDLK_LEFT, SDLK_RIGHT, SDLK_UP, SDLK_DOWN}] = [&](SDL_Keycode a_Key)
-        {
-            static const int32_t speed = 7;
+        in.m_KeyDownResponses[Catch(s.keys_down(), &s)] = std::bind(&Square::key_down, &s, std::placeholders::_1);
+        in.m_KeyUpResponses[Catch(s.keys_up(), &s)] = std::bind(&Square::key_up, &s, std::placeholders::_1);
 
-            switch (a_Key)
-            {
-            case SDLK_LEFT:
-                s.x(-speed);
-                break;
-            case SDLK_RIGHT:
-                s.x(speed);
-                break;
-            case SDLK_UP:
-                s.y(-speed);
-                break;
-            case SDLK_DOWN:
-                s.y(speed);
-            default:
-                break;
-            }
-            return false;
-        };
-        in.m_KeyDownResponses[{SDLK_RETURN}] = [](SDL_Keycode a_Key)
+        in.m_KeyDownResponses[Catch({SDLK_RETURN})] = [](SDL_Keycode a_key)
         {
             return true;
         };
-        in.m_KeyDownResponses[{SDLK_ESCAPE}] = [&](SDL_Keycode a_Key)
+        in.m_KeyDownResponses[Catch({SDLK_ESCAPE})] = [&](SDL_Keycode a_key)
         {
             exit = true;
             return exit;

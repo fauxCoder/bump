@@ -10,6 +10,7 @@ struct SB;
 struct Play
 {
     Play(Quartz& a_Q, RM& a_RM, SB& a_SB);
+
     ~Play()
     {
     }
