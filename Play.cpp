@@ -39,8 +39,7 @@ void Play::Run()
         Square s(m_RM);
 
         Input in(m_Q);
-        in.m_KeyDownResponses[Catch(s.keys_down(), &s)] = std::bind(&Square::key_down, &s, std::placeholders::_1);
-        in.m_KeyUpResponses[Catch(s.keys_up(), &s)] = std::bind(&Square::key_up, &s, std::placeholders::_1);
+        in.link(s);
 
         in.m_KeyDownResponses[Catch({SDLK_RETURN})] = [](SDL_Keycode a_key)
         {
@@ -51,12 +50,10 @@ void Play::Run()
             exit = true;
             return exit;
         };
-
         in.Enter([&]()
         {
             s.write();
         });
-
     }
 
     m_Q.Tooth();

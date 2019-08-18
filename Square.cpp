@@ -4,7 +4,7 @@ uint32_t Square::s_me;
 
 Square::Square(RM& a_RM)
 : m_RM(a_RM)
-, m_me(m_RM.Add(10))
+, m_entry(m_RM.Add(10))
 , m_x(10)
 , m_y(10)
 , m_vx(0)
@@ -17,10 +17,20 @@ void Square::write()
     auto vx = m_vx * 7;
     auto vy = m_vy * 7;
 
+    if (vx != 0 && vy != 0)
+    {
+        // 99/70 approximates the
+        // square root of 2
+        vx *= 73;
+        vx /= 99;
+        vy *= 73;
+        vy /= 99;
+    }
+
     m_x += vx;
     m_y += vy;
 
-    m_me.write(s_me, m_x, m_y);
+    m_entry.write(s_me, m_x, m_y);
 }
 
 bool Square::key_down(SDL_Keycode a_key)

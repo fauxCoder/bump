@@ -40,7 +40,7 @@ struct Square
     bool key_up(SDL_Keycode);
 
     RM& m_RM;
-    RM::Entry m_me;
+    RM::Entry m_entry;
     int32_t m_x;
     int32_t m_y;
     int32_t m_vx;
