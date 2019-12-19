@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Curie/RM.h>
+#include <Curie/SB.h>
 
 struct Square
 {
@@ -31,7 +32,9 @@ struct Square
 
     static uint32_t s_me;
 
-    Square(RM& a_RM);
+    Square(RM&);
+
+    ~Square();
 
     void write();
 
@@ -39,10 +42,14 @@ struct Square
 
     bool key_up(SDL_Keycode);
 
+    void speak(SB::working_t*);
+
     RM& m_RM;
     RM::Entry m_entry;
     int32_t m_x;
     int32_t m_y;
     int32_t m_vx;
     int32_t m_vy;
+
+    uint32_t m_voice;
 };

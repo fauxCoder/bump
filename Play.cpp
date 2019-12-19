@@ -14,18 +14,27 @@
 #include <utility>
 #include <vector>
 
+#include <cstdlib>
+
 Play::Play(Quartz& a_Q, RM& a_RM, SB& a_SB)
 : m_Q(a_Q)
 , m_RM(a_RM)
 , m_SB(a_SB)
 {
-    m_Bump = m_SB.AddSound(m_SB.SForF(5.0), [&](uint32_t t, uint32_t l, SB::working_t& out)
+    m_Bump = m_SB.CreateSound(m_SB.SForF(12.0), [&](uint32_t t, uint32_t l, SB::working_t* out)
     {
-        out = SH(t, l)
-            .Sin(9.0)
-            .Scale(0.9)
+        SB::working_t left = SH(t, l)
+            .Sin(12.0)
+            .Scale(0.75)
             .Envelope(m_SB.SForF(0.75), m_SB.SForF(0.6), 0.3, m_SB.SForF(0.75))
             .Done();
+
+        out[0] = left;
+
+        if (m_SB.m_Have.channels == 2)
+        {
+            out[1] = left;
+        }
     });
 }
 
@@ -33,12 +42,13 @@ void Play::Run()
 {
     Square::load(m_RM);
 
+    Square s(m_RM);
+    m_SB.AddSource(std::bind(&Square::speak, &s, std::placeholders::_1));
+
     bool exit = false;
     while ( ! exit)
     {
-        Square s(m_RM);
-
-        Input in(m_Q);
+        Input in;
         in.link(s);
 
         in.m_KeyDownResponses[Catch({SDLK_RETURN})] = [](SDL_Keycode a_key)
@@ -50,10 +60,14 @@ void Play::Run()
             exit = true;
             return exit;
         };
-        in.Enter([&]()
+
+        in.open([&]()
         {
             s.write();
+            m_Q.Tooth();
         });
+
+        m_SB.PlaySound(m_Bump);
     }
 
     m_Q.Tooth();

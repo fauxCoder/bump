@@ -1,5 +1,7 @@
 #include <Square.h>
 
+#include <Curie/SH.h>
+
 uint32_t Square::s_me;
 
 Square::Square(RM& a_RM)
@@ -9,7 +11,13 @@ Square::Square(RM& a_RM)
 , m_y(10)
 , m_vx(0)
 , m_vy(0)
+, m_voice(0)
 {
+}
+
+Square::~Square()
+{
+    m_RM.Remove(m_entry);
 }
 
 void Square::write()
@@ -19,7 +27,7 @@ void Square::write()
 
     if (vx != 0 && vy != 0)
     {
-        // 99/70 approximates the
+        // 99/73 approximates the
         // square root of 2
         vx *= 73;
         vx /= 99;
@@ -77,4 +85,15 @@ bool Square::key_up(SDL_Keycode a_key)
     }
 
     return false;
+}
+
+void Square::speak(SB::working_t* samples)
+{
+    SB::working_t left = SH(++m_voice, 0)
+        .Sin(std::max((double)m_x / 15.0, 2.0))
+        .Scale(std::min(std::abs((double)m_y / 300.0), 0.6))
+        .Done();
+
+    samples[0] = left;
+    samples[1] = left;
 }
