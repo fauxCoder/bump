@@ -24,4 +24,5 @@ struct Play
     SB& m_SB;
 
     uint32_t m_Bump;
+    uint32_t m_Stereo;
 };

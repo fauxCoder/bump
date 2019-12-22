@@ -42,7 +42,7 @@ struct Square
 
     bool key_up(SDL_Keycode);
 
-    void speak(SB::working_t*);
+    void speak(SB::working_t*, size_t);
 
     RM& m_RM;
     RM::Entry m_entry;
@@ -52,4 +52,6 @@ struct Square
     int32_t m_vy;
 
     uint32_t m_voice;
+    double m_voice_x;
+    double m_voice_y;
 };

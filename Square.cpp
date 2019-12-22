@@ -12,6 +12,8 @@ Square::Square(RM& a_RM)
 , m_vx(0)
 , m_vy(0)
 , m_voice(0)
+, m_voice_x(0.0)
+, m_voice_y(0.0)
 {
 }
 
@@ -87,13 +89,26 @@ bool Square::key_up(SDL_Keycode a_key)
     return false;
 }
 
-void Square::speak(SB::working_t* samples)
+void Square::speak(SB::working_t* samples, size_t count)
 {
-    SB::working_t left = SH(++m_voice, 0)
-        .Sin(std::max((double)m_x / 15.0, 2.0))
-        .Scale(std::min(std::abs((double)m_y / 300.0), 0.6))
-        .Done();
+    for (uint32_t i = 0; i < count; i += 2)
+    {
+        if (m_x > (int32_t)m_voice_x)
+            m_voice_x += 0.001;
+        else if (m_x < (int32_t)m_voice_x)
+            m_voice_x -= 0.001;
 
-    samples[0] = left;
-    samples[1] = left;
+        if (m_y > m_voice_y)
+            m_voice_y += 0.01;
+        else if (m_y < m_voice_y)
+            m_voice_y -= 0.01;
+
+        SB::working_t left = SH(++m_voice, 0)
+            .Sin(std::max(m_voice_x / 15.0, 2.0))
+            .Scale(std::min(std::abs(m_voice_y / 300.0), 0.75))
+            .Done();
+
+        SB::combine(samples[i], left);
+        SB::combine(samples[i+1], left);
+    }
 }
