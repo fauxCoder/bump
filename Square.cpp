@@ -94,21 +94,30 @@ void Square::speak(SB::working_t* samples, size_t count)
     for (uint32_t i = 0; i < count; i += 2)
     {
         if (m_x > (int32_t)m_voice_x)
-            m_voice_x += 0.001;
+        {
+            m_voice_x += 0.003;
+        }
         else if (m_x < (int32_t)m_voice_x)
-            m_voice_x -= 0.001;
+        {
+            m_voice_x -= 0.003;
+        }
 
         if (m_y > m_voice_y)
             m_voice_y += 0.01;
         else if (m_y < m_voice_y)
             m_voice_y -= 0.01;
 
-        SB::working_t left = SH(++m_voice, 0)
+        SB::working_t left = SH(m_voice, 0)
             .Sin(std::max(m_voice_x / 15.0, 2.0))
             .Scale(std::min(std::abs(m_voice_y / 300.0), 0.75))
             .Done();
 
+        SB::working_t right = SH(++m_voice, 0)
+            .Sin(std::max(m_voice_x / 13.0, 6.0))
+            .Scale(std::min(std::abs(m_voice_y / 300.0), 0.75))
+            .Done();
+
         SB::combine(samples[i], left);
-        SB::combine(samples[i+1], left);
+        SB::combine(samples[i+1], right);
     }
 }

@@ -21,35 +21,30 @@ Play::Play(Quartz& a_Q, RM& a_RM, SB& a_SB)
 , m_RM(a_RM)
 , m_SB(a_SB)
 {
-    m_Bump = m_SB.CreateSound(m_SB.SForF(12.0), 1,
-    [&](uint32_t t, uint32_t l, std::vector<std::array<SB::working_t, SB::s_chunk>>& out, size_t offset)
+    m_Bump = m_SB.CreateSound(m_SB.SForF(12.0),
+    [&](uint32_t t, uint32_t l, SB::working_t& mono)
     {
-        SB::working_t left = SH(t, l)
+        mono = SH(t, l)
             .Sin(12.0)
             .Scale(0.75)
             .Envelope(m_SB.SForF(0.75), m_SB.SForF(0.6), 0.3, m_SB.SForF(0.75))
             .Done();
-
-        out[0][offset] = left;
     });
 
-    m_Stereo = m_SB.CreateSound(m_SB.SForF(12.0), 2,
-    [&](uint32_t t, uint32_t l, std::vector<std::array<SB::working_t, SB::s_chunk>>& out, size_t offset)
+    m_Stereo = m_SB.CreateSound(m_SB.SForF(12.0),
+    [&](uint32_t t, uint32_t l, SB::working_t& left, SB::working_t& right)
     {
-        SB::working_t left = SH(t, l)
+        left = SH(t, l)
             .Sin(12.0)
             .Scale(0.8)
             .Envelope(m_SB.SForF(0.5), m_SB.SForF(0.6), 0.3, m_SB.SForF(0.75))
             .Done();
 
-        SB::working_t right = SH(t, l)
+        right = SH(t, l)
             .Sin(18.0)
             .Scale(0.4)
             .Envelope(m_SB.SForF(0.5), m_SB.SForF(0.6), 0.3, m_SB.SForF(0.75))
             .Done();
-
-        out[0][offset] = left;
-        out[1][offset] = right;
     });
 }
 
