@@ -16,6 +16,8 @@ Square::Square(RM& a_RM)
 , m_voice(0)
 , m_voice_x(0.0)
 , m_voice_y(0.0)
+, m_voice_vx(0.0)
+, m_voice_vy(0.0)
 {
 }
 
@@ -99,27 +101,38 @@ void Square::speak(SB::working_t* samples, size_t count)
 
     if (m_x > (int32_t)m_voice_x)
     {
-        m_voice_x += 0.8;
+        if (m_voice_vx < 2.7)
+            m_voice_vx += 0.1;
     }
     else if (m_x < (int32_t)m_voice_x)
     {
-        m_voice_x -= 0.8;
+        if (m_voice_vx > -2.7)
+            m_voice_vx -= 0.1;
     }
 
     if (m_y > m_voice_y)
-        m_voice_y += 0.1;
+    {
+        if (m_voice_vy < 2.7)
+            m_voice_vy += 0.1;
+    }
     else if (m_y < m_voice_y)
-        m_voice_y -= 0.1;
+    {
+        if (m_voice_vy > -2.7)
+            m_voice_vy -= 0.1;
+    }
+
+    m_voice_x += m_voice_vx;
+    m_voice_y += m_voice_vy;
 
     for (uint32_t i = 0; i < count; i += 2)
     {
-        wave_l.pending_divisor = std::max(m_voice_x / 15.0, 2.0);
+        wave_l.pending_cycle = std::max(m_voice_x / 0.0725, 2.0);
         SB::working_t left = SH(m_voice, 0)
             .wave(wave_l)
             .scale(std::min(std::abs(m_voice_y / 300.0), 0.75))
             ();
 
-        wave_r.pending_divisor = std::max(m_voice_x / 13.0, 6.0);
+        wave_r.pending_cycle = std::max(m_voice_x / 0.065, 6.0);
         SB::working_t right = SH(m_voice++, 0)
             .wave(wave_r)
             .scale(std::min(std::abs(m_voice_y / 300.0), 0.75))

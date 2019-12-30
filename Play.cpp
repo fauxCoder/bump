@@ -24,7 +24,7 @@ Play::Play(Quartz& a_Q, RM& a_RM, SB& a_SB)
     m_Bump = m_SB.CreateSound(m_SB.SForF(12.0),
     [&](uint32_t t, uint32_t l, SB::working_t& mono)
     {
-        static Wave w(12.0);
+        static Wave w(1280);
         mono = SH(t, l)
             .wave(w)
             .scale(0.75)
@@ -35,14 +35,14 @@ Play::Play(Quartz& a_Q, RM& a_RM, SB& a_SB)
     m_Stereo = m_SB.CreateSound(m_SB.SForF(12.0),
     [&](uint32_t t, uint32_t l, SB::working_t& left, SB::working_t& right)
     {
-        static Wave wl(12.0);
+        static Wave wl(1903);
         left = SH(t, l)
             .wave(wl)
             .scale(0.8)
             .envelope(m_SB.SForF(0.5), m_SB.SForF(0.6), 0.3, m_SB.SForF(0.75))
             ();
 
-        static Wave wr(18.0);
+        static Wave wr(1750);
         right = SH(t, l)
             .wave(wr)
             .scale(0.4)
