@@ -2,3 +2,4 @@ bump
 content/out/
 debug/
 release/
+.clangd/
