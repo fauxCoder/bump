@@ -5,9 +5,13 @@
 
 struct Square
 {
+    static uint32_t s_me;
+    static uint32_t s_tail;
+
     static void load(RM& a_RM)
     {
         s_me = a_RM.AddImage("content/card.png");
+        s_tail = a_RM.AddImage("content/tail.png");
     }
 
     static std::set<SDL_Keycode> keys_down()
@@ -30,8 +34,6 @@ struct Square
         };
     }
 
-    static uint32_t s_me;
-
     Square(RM&);
 
     ~Square();
@@ -46,6 +48,7 @@ struct Square
 
     RM& m_RM;
     RM::Entry m_entry;
+    RM::Entry m_tail;
     int32_t m_x;
     int32_t m_y;
     int32_t m_vx;

@@ -3,10 +3,12 @@
 #include <Curie/SH.h>
 
 uint32_t Square::s_me;
+uint32_t Square::s_tail;
 
 Square::Square(RM& a_RM)
 : m_RM(a_RM)
 , m_entry(m_RM.Add(10))
+, m_tail(m_RM.Add(5))
 , m_x(10)
 , m_y(10)
 , m_vx(0)
@@ -41,6 +43,7 @@ void Square::write()
     m_y += vy;
 
     m_entry.write(s_me, m_x, m_y);
+    m_tail.write(s_tail, m_voice_x, m_voice_y);
 }
 
 bool Square::key_down(SDL_Keycode a_key)
@@ -91,31 +94,36 @@ bool Square::key_up(SDL_Keycode a_key)
 
 void Square::speak(SB::working_t* samples, size_t count)
 {
+    static Wave wave_l;
+    static Wave wave_r;
+
+    if (m_x > (int32_t)m_voice_x)
+    {
+        m_voice_x += 0.8;
+    }
+    else if (m_x < (int32_t)m_voice_x)
+    {
+        m_voice_x -= 0.8;
+    }
+
+    if (m_y > m_voice_y)
+        m_voice_y += 0.1;
+    else if (m_y < m_voice_y)
+        m_voice_y -= 0.1;
+
     for (uint32_t i = 0; i < count; i += 2)
     {
-        if (m_x > (int32_t)m_voice_x)
-        {
-            m_voice_x += 0.003;
-        }
-        else if (m_x < (int32_t)m_voice_x)
-        {
-            m_voice_x -= 0.003;
-        }
-
-        if (m_y > m_voice_y)
-            m_voice_y += 0.01;
-        else if (m_y < m_voice_y)
-            m_voice_y -= 0.01;
-
+        wave_l.pending_divisor = std::max(m_voice_x / 15.0, 2.0);
         SB::working_t left = SH(m_voice, 0)
-            .Sin(std::max(m_voice_x / 15.0, 2.0))
-            .Scale(std::min(std::abs(m_voice_y / 300.0), 0.75))
-            .Done();
+            .wave(wave_l)
+            .scale(std::min(std::abs(m_voice_y / 300.0), 0.75))
+            ();
 
-        SB::working_t right = SH(++m_voice, 0)
-            .Sin(std::max(m_voice_x / 13.0, 6.0))
-            .Scale(std::min(std::abs(m_voice_y / 300.0), 0.75))
-            .Done();
+        wave_r.pending_divisor = std::max(m_voice_x / 13.0, 6.0);
+        SB::working_t right = SH(m_voice++, 0)
+            .wave(wave_r)
+            .scale(std::min(std::abs(m_voice_y / 300.0), 0.75))
+            ();
 
         SB::combine(samples[i], left);
         SB::combine(samples[i+1], right);

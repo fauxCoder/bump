@@ -24,27 +24,30 @@ Play::Play(Quartz& a_Q, RM& a_RM, SB& a_SB)
     m_Bump = m_SB.CreateSound(m_SB.SForF(12.0),
     [&](uint32_t t, uint32_t l, SB::working_t& mono)
     {
+        static Wave w(12.0);
         mono = SH(t, l)
-            .Sin(12.0)
-            .Scale(0.75)
-            .Envelope(m_SB.SForF(0.75), m_SB.SForF(0.6), 0.3, m_SB.SForF(0.75))
-            .Done();
+            .wave(w)
+            .scale(0.75)
+            .envelope(m_SB.SForF(0.75), m_SB.SForF(0.6), 0.3, m_SB.SForF(0.75))
+            ();
     });
 
     m_Stereo = m_SB.CreateSound(m_SB.SForF(12.0),
     [&](uint32_t t, uint32_t l, SB::working_t& left, SB::working_t& right)
     {
+        static Wave wl(12.0);
         left = SH(t, l)
-            .Sin(12.0)
-            .Scale(0.8)
-            .Envelope(m_SB.SForF(0.5), m_SB.SForF(0.6), 0.3, m_SB.SForF(0.75))
-            .Done();
+            .wave(wl)
+            .scale(0.8)
+            .envelope(m_SB.SForF(0.5), m_SB.SForF(0.6), 0.3, m_SB.SForF(0.75))
+            ();
 
+        static Wave wr(18.0);
         right = SH(t, l)
-            .Sin(18.0)
-            .Scale(0.4)
-            .Envelope(m_SB.SForF(0.5), m_SB.SForF(0.6), 0.3, m_SB.SForF(0.75))
-            .Done();
+            .wave(wr)
+            .scale(0.4)
+            .envelope(m_SB.SForF(0.5), m_SB.SForF(0.6), 0.3, m_SB.SForF(0.75))
+            ();
     });
 }
 
