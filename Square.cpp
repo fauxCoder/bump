@@ -101,23 +101,31 @@ void Square::speak(SB::working_t* samples, size_t count)
 
     if (m_x > (int32_t)m_voice_x)
     {
-        if (m_voice_vx < 2.7)
+        if (m_voice_vx < 0)
+            m_voice_vx += 0.25;
+        else if (m_voice_vx < 3.0)
             m_voice_vx += 0.1;
     }
     else if (m_x < (int32_t)m_voice_x)
     {
-        if (m_voice_vx > -2.7)
+        if (m_voice_vx > 0)
+            m_voice_vx -= 0.25;
+        else if (m_voice_vx > -3.0)
             m_voice_vx -= 0.1;
     }
 
     if (m_y > m_voice_y)
     {
-        if (m_voice_vy < 2.7)
+        if (m_voice_vy < 0)
+            m_voice_vy += 0.25;
+        else if (m_voice_vy < 3.0)
             m_voice_vy += 0.1;
     }
     else if (m_y < m_voice_y)
     {
-        if (m_voice_vy > -2.7)
+        if (m_voice_vy > 0)
+            m_voice_vy -= 0.25;
+        else if (m_voice_vy > -3.0)
             m_voice_vy -= 0.1;
     }
 
@@ -126,13 +134,13 @@ void Square::speak(SB::working_t* samples, size_t count)
 
     for (uint32_t i = 0; i < count; i += 2)
     {
-        wave_l.pending_cycle = std::max(m_voice_x / 0.0725, 2.0);
+        wave_l.tune(std::max(128.0, m_voice_x * 5.0));
         SB::working_t left = SH(m_voice, 0)
             .wave(wave_l)
             .scale(std::min(std::abs(m_voice_y / 300.0), 0.75))
             ();
 
-        wave_r.pending_cycle = std::max(m_voice_x / 0.065, 6.0);
+        wave_r.tune(std::max(128.0, m_voice_x * 4.5));
         SB::working_t right = SH(m_voice++, 0)
             .wave(wave_r)
             .scale(std::min(std::abs(m_voice_y / 300.0), 0.75))
