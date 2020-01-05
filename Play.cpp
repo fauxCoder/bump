@@ -120,9 +120,9 @@ void Play::Run()
         in.open([&]()
         {
             s.write();
-            m_Q.Tooth();
+            m_Q.tooth();
         });
     }
 
-    m_Q.Tooth();
+    m_Q.tooth();
 }
